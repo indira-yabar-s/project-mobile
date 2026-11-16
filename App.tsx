@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { AuthProvider } from './src/contexts/AuthProvider';
+import { SnackbarProvider } from './src/contexts/SnackbarProvider';
 import { ThemeProvider } from './src/contexts/ThemeProvider';
 import { RootNavigator } from './src/navigation/RootNavigator';
 
@@ -10,9 +12,13 @@ export default function App() {
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <AuthProvider>
-            <RootNavigator />
-          </AuthProvider>
+          <ErrorBoundary>
+            <SnackbarProvider>
+              <AuthProvider>
+                <RootNavigator />
+              </AuthProvider>
+            </SnackbarProvider>
+          </ErrorBoundary>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

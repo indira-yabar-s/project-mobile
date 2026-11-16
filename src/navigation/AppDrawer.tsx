@@ -17,9 +17,12 @@ type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 const Drawer = createDrawerNavigator<AppDrawerParamList>();
 
-const drawerIcon =
-  (name: IconName) =>
-  ({ color, size }: { color: string; size: number }) => <MaterialCommunityIcons name={name} color={color} size={size} />;
+function drawerIcon(name: IconName) {
+  function DrawerIcon({ color, size }: { color: string; size: number }) {
+    return <MaterialCommunityIcons name={name} color={color} size={size} />;
+  }
+  return DrawerIcon;
+}
 
 export function AppDrawer() {
   const { isAdmin } = useAuth();

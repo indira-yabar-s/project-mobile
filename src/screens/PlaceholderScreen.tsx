@@ -1,18 +1,19 @@
 import { useRoute } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 export function PlaceholderScreen() {
   const route = useRoute();
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer style={styles.container}>
       <Text variant="titleMedium">{route.name}</Text>
       <Text variant="bodyMedium">Próximamente</Text>
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 4 },
+  container: { justifyContent: 'center', alignItems: 'center', gap: 4 },
 });
