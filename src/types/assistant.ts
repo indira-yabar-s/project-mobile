@@ -2,6 +2,7 @@ export interface AssistantAnswer {
   respuesta: string;
   consultasRestantesHoy: number;
   fecha: string;
+  visual?: unknown;
 }
 
 export interface AssistantHistoryEntry {
@@ -17,4 +18,5 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   text: string;
   failed?: boolean;
+  visual?: unknown;
 }
