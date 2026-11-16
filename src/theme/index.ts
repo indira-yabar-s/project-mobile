@@ -1,3 +1,4 @@
+import { DarkTheme, DefaultTheme, type Theme } from '@react-navigation/native';
 import { MD3DarkTheme, MD3LightTheme, type MD3Theme } from 'react-native-paper';
 
 export const lightTheme: MD3Theme = {
@@ -33,3 +34,18 @@ export const darkTheme: MD3Theme = {
     surface: '#161d29',
   },
 };
+
+const buildNavigationTheme = (base: Theme, paperTheme: MD3Theme): Theme => ({
+  ...base,
+  colors: {
+    primary: paperTheme.colors.primary,
+    background: paperTheme.colors.background,
+    card: paperTheme.colors.surface,
+    text: paperTheme.colors.onSurface,
+    border: paperTheme.colors.outlineVariant,
+    notification: paperTheme.colors.error,
+  },
+});
+
+export const navigationLightTheme = buildNavigationTheme(DefaultTheme, lightTheme);
+export const navigationDarkTheme = buildNavigationTheme(DarkTheme, darkTheme);
