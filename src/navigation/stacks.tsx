@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { ProductFormScreen } from '../screens/ProductFormScreen';
+import { ProductVariantsScreen } from '../screens/ProductVariantsScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import { PlaceholderScreen } from '../screens/PlaceholderScreen';
 import type {
@@ -60,7 +61,7 @@ export function ProductsStackNavigator() {
       />
       <ProductsStack.Screen
         name="ProductVariants"
-        component={PlaceholderScreen}
+        component={ProductVariantsScreen}
         options={{ title: 'Variantes y stock' }}
       />
     </ProductsStack.Navigator>

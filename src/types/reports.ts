@@ -33,19 +33,6 @@ export interface ProductRanking {
   ganancia: number;
 }
 
-export interface ProductVariant {
-  id: number;
-  productoId: number;
-  productoNombre: string;
-  talla: string;
-  color: string;
-  sku: string;
-  stock: number;
-  stockMinimo: number;
-  activo: boolean;
-  stockBajo: boolean;
-}
-
 export interface DailySalesPoint {
   label: string;
   total: number;

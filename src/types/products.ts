@@ -32,3 +32,28 @@ export interface ProductPayload {
   precioVenta: number;
   categoriaId: number | null;
 }
+
+export interface ProductVariant {
+  id: number;
+  productoId: number;
+  productoNombre: string;
+  talla: string;
+  color: string;
+  sku: string;
+  stock: number;
+  stockMinimo: number;
+  activo: boolean;
+  stockBajo: boolean;
+}
+
+export interface VariantPayload {
+  talla: string;
+  color: string;
+  sku: string | null;
+  stockMinimo: number;
+}
+
+export interface StockMovement {
+  id: number;
+  stockResultante: number | null;
+}

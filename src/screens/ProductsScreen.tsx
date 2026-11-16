@@ -7,6 +7,7 @@ import { ConfirmDialog } from '../components/ConfirmDialog';
 import { DataList } from '../components/DataList';
 import { FilterChips } from '../components/FilterChips';
 import { PriceDialog } from '../components/PriceDialog';
+import { SortChips } from '../components/SortChips';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { SearchInput } from '../components/SearchInput';
 import { useAuth } from '../hooks/useAuth';
@@ -14,6 +15,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import { usePagination, type FetchPageArgs } from '../hooks/usePagination';
 import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import { useSnackbar } from '../hooks/useSnackbar';
+import { useSort } from '../hooks/useSort';
 import { productService } from '../services/productService';
 import type { ProductsStackParamList } from '../types/navigation';
 import type { Product } from '../types/products';
@@ -23,7 +25,6 @@ import { formatCurrency } from '../utils/format';
 type Props = NativeStackScreenProps<ProductsStackParamList, 'ProductsList'>;
 
 type SortField = 'codigo' | 'nombre' | 'precioVenta';
-type SortDirection = 'asc' | 'desc';
 
 const SORT_LABELS: Record<SortField, string> = {
   nombre: 'Nombre',
@@ -42,14 +43,12 @@ export function ProductsScreen({ navigation }: Props) {
   const theme = useTheme();
   const [search, setSearch] = useState('');
   const [showInactive, setShowInactive] = useState(false);
-  const [sortField, setSortField] = useState<SortField>('nombre');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const { field: sortField, direction: sortDirection, sort, toggle: toggleSort } = useSort<SortField>('nombre');
   const [productToDeactivate, setProductToDeactivate] = useState<Product | null>(null);
   const [productToReprice, setProductToReprice] = useState<Product | null>(null);
   const [isDeactivating, setIsDeactivating] = useState(false);
 
   const searchTerm = useDebounce(search, 300).trim();
-  const sort = `${sortField},${sortDirection}`;
 
   const fetchPage = useCallback(
     ({ page, size, signal }: FetchPageArgs) =>
@@ -60,20 +59,6 @@ export function ProductsScreen({ navigation }: Props) {
   const { refresh } = pagination;
 
   useRefreshOnFocus(refresh);
-
-  const handleSort = (field: string) => {
-    if (field === sortField) {
-      setSortDirection((direction) => (direction === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field as SortField);
-      setSortDirection('asc');
-    }
-  };
-
-  const sortOptions = (Object.keys(SORT_LABELS) as SortField[]).map((field) => ({
-    value: field,
-    label: field === sortField ? `${SORT_LABELS[field]} ${sortDirection === 'asc' ? '↑' : '↓'}` : SORT_LABELS[field],
-  }));
 
   const handleConfirmDeactivate = async () => {
     if (!productToDeactivate) return;
@@ -113,7 +98,7 @@ export function ProductsScreen({ navigation }: Props) {
         value={showInactive ? 'todos' : 'activos'}
         onChange={(value) => setShowInactive(value === 'todos')}
       />
-      <FilterChips label="Ordenar por" options={sortOptions} value={sortField} onChange={handleSort} />
+      <SortChips labels={SORT_LABELS} field={sortField} direction={sortDirection} onChange={toggleSort} />
     </View>
   );
 
