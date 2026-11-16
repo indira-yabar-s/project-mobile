@@ -37,7 +37,7 @@ const STATUS_OPTIONS = [
   { value: 'todos', label: 'Todos' },
 ];
 
-export function ProductsScreen({ navigation }: Props) {
+export function ProductsScreen({ navigation, route }: Props) {
   const { isAdmin } = useAuth();
   const { showMessage } = useSnackbar();
   const theme = useTheme();
@@ -47,6 +47,15 @@ export function ProductsScreen({ navigation }: Props) {
   const [productToDeactivate, setProductToDeactivate] = useState<Product | null>(null);
   const [productToReprice, setProductToReprice] = useState<Product | null>(null);
   const [isDeactivating, setIsDeactivating] = useState(false);
+
+  const [lastScanAt, setLastScanAt] = useState<number | undefined>();
+  const scannedCode = route.params?.scannedCode;
+  const scannedAt = route.params?.scannedAt;
+
+  if (scannedCode !== undefined && scannedAt !== lastScanAt) {
+    setLastScanAt(scannedAt);
+    setSearch(scannedCode);
+  }
 
   const searchTerm = useDebounce(search, 300).trim();
 
@@ -91,7 +100,12 @@ export function ProductsScreen({ navigation }: Props) {
 
   const header = (
     <View>
-      <SearchInput value={search} onChange={setSearch} placeholder="Buscar por código o nombre" />
+      <SearchInput
+        value={search}
+        onChange={setSearch}
+        placeholder="Buscar por código o nombre"
+        onScanPress={() => navigation.navigate('ProductScanner')}
+      />
       <FilterChips
         label="Filtrar por estado"
         options={STATUS_OPTIONS}

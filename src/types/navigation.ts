@@ -17,11 +17,13 @@ export type DashboardStackParamList = {
 export type SalesStackParamList = {
   SalesList: undefined;
   SaleDetail: { id: number };
-  SaleForm: undefined;
+  SaleForm: { scannedCode?: string; lineKey?: string } | undefined;
+  SaleScanner: { lineKey: string };
 };
 
 export type ProductsStackParamList = {
-  ProductsList: undefined;
+  ProductsList: { scannedCode?: string; scannedAt?: number } | undefined;
+  ProductScanner: undefined;
   ProductForm: { id?: number } | undefined;
   ProductVariants: { id: number };
 };

@@ -5,9 +5,10 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  onScanPress?: () => void;
 }
 
-export function SearchInput({ value, onChange, placeholder = 'Buscar...' }: SearchInputProps) {
+export function SearchInput({ value, onChange, placeholder = 'Buscar...', onScanPress }: SearchInputProps) {
   return (
     <Searchbar
       value={value}
@@ -16,6 +17,9 @@ export function SearchInput({ value, onChange, placeholder = 'Buscar...' }: Sear
       accessibilityLabel={placeholder}
       autoCapitalize="none"
       autoCorrect={false}
+      traileringIcon={onScanPress ? 'barcode-scan' : undefined}
+      traileringIconAccessibilityLabel="Escanear código"
+      onTraileringIconPress={onScanPress}
       style={styles.input}
     />
   );

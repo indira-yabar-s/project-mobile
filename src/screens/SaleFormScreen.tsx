@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { ErrorState } from '../components/ErrorState';
@@ -12,6 +12,7 @@ import { SummaryRow } from '../components/SummaryRow';
 import { useFetch } from '../hooks/useFetch';
 import { useOrderLines } from '../hooks/useOrderLines';
 import { useSnackbar } from '../hooks/useSnackbar';
+import type { Product } from '../types/products';
 import { clientService } from '../services/clientService';
 import { productService } from '../services/productService';
 import { salesService } from '../services/salesService';
@@ -27,7 +28,7 @@ type Props = NativeStackScreenProps<SalesStackParamList, 'SaleForm'>;
 const STEPS = ['Datos', 'Productos', 'Confirmar'];
 const LAST_STEP = STEPS.length - 1;
 
-export function SaleFormScreen({ navigation }: Props) {
+export function SaleFormScreen({ navigation, route }: Props) {
   const { showMessage } = useSnackbar();
   const [step, setStep] = useState(0);
   const [clienteId, setClienteId] = useState('');
@@ -35,12 +36,46 @@ export function SaleFormScreen({ navigation }: Props) {
   const [canal, setCanal] = useState<SalesChannel>('TIENDA');
   const [showErrors, setShowErrors] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scannedProducts, setScannedProducts] = useState<Product[]>([]);
   const { lines, addLine, removeLine, updateLine, total, isValid } = useOrderLines('sale');
+  const scannedCode = route.params?.scannedCode;
+  const scannedLineKey = route.params?.lineKey;
 
   const products = useFetch(
     useCallback((signal: AbortSignal) => productService.getAll({ size: 100, soloActivos: true }, signal), []),
   );
   const clients = useFetch(useCallback((signal: AbortSignal) => clientService.getAll({ size: 100 }, signal), []));
+
+  useEffect(() => {
+    if (!scannedCode || !scannedLineKey) return;
+    navigation.setParams({ scannedCode: undefined, lineKey: undefined });
+
+    productService
+      .getAll({ search: scannedCode, size: 10, soloActivos: true })
+      .then((page) => {
+        const wanted = scannedCode.toLowerCase();
+        const match =
+          page.content.find((product) => product.codigo.toLowerCase() === wanted) ??
+          (page.content.length === 1 ? page.content[0] : undefined);
+
+        if (!match) {
+          showMessage(`No encontramos un producto activo con el código "${scannedCode}"`, 'error');
+          return;
+        }
+
+        setScannedProducts((current) => (current.some((item) => item.id === match.id) ? current : [...current, match]));
+        updateLine(scannedLineKey, {
+          productoId: String(match.id),
+          varianteId: '',
+          stock: null,
+          precioUnitario: String(match.precioVenta),
+        });
+        showMessage(`Producto agregado: ${match.nombre}`, 'success');
+      })
+      .catch((error: unknown) => {
+        showMessage(getErrorMessage(error) ?? 'No se pudo buscar el producto escaneado', 'error');
+      });
+  }, [scannedCode, scannedLineKey, navigation, showMessage, updateLine]);
 
   const handleNext = () => {
     if (step === 1 && !isValid) {
@@ -103,7 +138,11 @@ export function SaleFormScreen({ navigation }: Props) {
     );
   }
 
-  const productList = products.data.content;
+  const loadedProducts = products.data.content;
+  const productList = [
+    ...loadedProducts,
+    ...scannedProducts.filter((scanned) => !loadedProducts.some((item) => item.id === scanned.id)),
+  ];
   const clientList = clients.data.content;
   const client = clientList.find((item) => String(item.id) === clienteId);
 
@@ -158,6 +197,7 @@ export function SaleFormScreen({ navigation }: Props) {
               canRemove={lines.length > 1}
               onChange={(patch) => updateLine(line.key, patch)}
               onRemove={() => removeLine(line.key)}
+              onScan={() => navigation.navigate('SaleScanner', { lineKey: line.key })}
             />
           ))}
           <Button mode="outlined" icon="plus" onPress={addLine} style={styles.addLine}>

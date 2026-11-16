@@ -20,6 +20,7 @@ interface SaleLineFieldsProps {
   canRemove: boolean;
   onChange: (patch: Partial<Omit<OrderLine, 'key'>>) => void;
   onRemove: () => void;
+  onScan?: () => void;
 }
 
 export function SaleLineFields({
@@ -31,6 +32,7 @@ export function SaleLineFields({
   canRemove,
   onChange,
   onRemove,
+  onScan,
 }: SaleLineFieldsProps) {
   const theme = useTheme();
   const navigation = useNavigation<NavigationProp<MainTabsParamList>>();
@@ -88,6 +90,15 @@ export function SaleLineFields({
       <Card.Content>
         <View style={styles.header}>
           <Text variant="titleSmall">{`Línea ${index + 1}`}</Text>
+          <View style={styles.headerActions}>
+            {onScan ? (
+              <IconButton
+                icon="barcode-scan"
+                accessibilityLabel={`Escanear producto para la línea ${index + 1}`}
+                onPress={onScan}
+                style={styles.remove}
+              />
+            ) : null}
           {canRemove ? (
             <IconButton
               icon="trash-can-outline"
@@ -97,6 +108,7 @@ export function SaleLineFields({
               style={styles.remove}
             />
           ) : null}
+          </View>
         </View>
 
         <SelectField
@@ -178,6 +190,7 @@ export function SaleLineFields({
 const styles = StyleSheet.create({
   card: { marginTop: 12 },
   header: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  headerActions: { flexDirection: 'row' },
   remove: { margin: 0 },
   noVariants: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' },
   row: { flexDirection: 'row', gap: 12 },
