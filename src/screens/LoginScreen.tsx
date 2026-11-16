@@ -5,6 +5,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 're
 import { Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FormTextField } from '../components/FormTextField';
+import { OfflineBanner } from '../components/OfflineBanner';
 import { useAuth } from '../hooks/useAuth';
 import type { LoginCredentials } from '../types/api';
 import type { AuthStackParamList } from '../types/navigation';
@@ -48,6 +49,9 @@ export function LoginScreen({ navigation }: Props) {
         contentContainerStyle={[styles.content, { paddingTop: insets.top + 32, paddingBottom: insets.bottom + 24 }]}
         keyboardShouldPersistTaps="handled"
       >
+        <View style={styles.offline}>
+          <OfflineBanner />
+        </View>
         <Text variant="displaySmall" style={{ color: theme.colors.primary }}>
           Gamarrito
         </Text>
@@ -108,6 +112,7 @@ export function LoginScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
+  offline: { borderRadius: 8, overflow: 'hidden' },
   content: { flexGrow: 1, paddingHorizontal: 24 },
   title: { marginTop: 32 },
   subtitle: { marginTop: 4 },
