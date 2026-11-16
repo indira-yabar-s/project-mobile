@@ -8,6 +8,11 @@ export interface Category {
   empresaId: number;
 }
 
+export interface CategoryPayload {
+  nombre: string;
+  descripcion: string | null;
+}
+
 export interface Product {
   id: number;
   codigo: string;

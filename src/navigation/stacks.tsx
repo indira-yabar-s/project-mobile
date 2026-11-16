@@ -1,5 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AssistantScreen } from '../screens/AssistantScreen';
+import { CategoriesScreen } from '../screens/CategoriesScreen';
+import { CategoryFormScreen } from '../screens/CategoryFormScreen';
 import { ClientFormScreen } from '../screens/ClientFormScreen';
 import { ClientsScreen } from '../screens/ClientsScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
@@ -123,10 +125,14 @@ export function CategoriesStackNavigator() {
     <CategoriesStack.Navigator>
       <CategoriesStack.Screen
         name="CategoriesList"
-        component={PlaceholderScreen}
+        component={CategoriesScreen}
         options={rootScreenOptions('Categorías')}
       />
-      <CategoriesStack.Screen name="CategoryForm" component={PlaceholderScreen} options={{ title: 'Categoría' }} />
+      <CategoriesStack.Screen
+        name="CategoryForm"
+        component={CategoryFormScreen}
+        options={({ route }) => ({ title: route.params?.id !== undefined ? 'Editar categoría' : 'Nueva categoría' })}
+      />
     </CategoriesStack.Navigator>
   );
 }
