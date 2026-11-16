@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { DashboardScreen } from '../screens/DashboardScreen';
 import { PlaceholderScreen } from '../screens/PlaceholderScreen';
 import type {
   AssistantStackParamList,
@@ -31,7 +32,7 @@ const TeamStack = createNativeStackNavigator<TeamStackParamList>();
 export function DashboardStackNavigator() {
   return (
     <DashboardStack.Navigator>
-      <DashboardStack.Screen name="Dashboard" component={PlaceholderScreen} options={rootScreenOptions('Dashboard')} />
+      <DashboardStack.Screen name="Dashboard" component={DashboardScreen} options={rootScreenOptions('Dashboard')} />
     </DashboardStack.Navigator>
   );
 }

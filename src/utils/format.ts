@@ -9,6 +9,13 @@ export function formatCurrency(value: number | string | null | undefined): strin
   return `${sign}S/ ${grouped}.${decimals}`;
 }
 
+export function formatCompactAmount(value: number): string {
+  if (Math.abs(value) >= 1000) {
+    return `S/ ${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}k`;
+  }
+  return `S/ ${Math.round(value)}`;
+}
+
 export function formatDateTime(value: string | number | Date | null | undefined): string {
   if (!value) return '—';
   const date = new Date(value);
