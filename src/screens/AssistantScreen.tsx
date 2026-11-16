@@ -59,7 +59,7 @@ export function AssistantScreen() {
       const answer = await assistantService.ask(question);
       setSessionMessages((current) => [
         ...current,
-        { id: `${messageId}-a`, role: 'assistant', text: answer.respuesta },
+        { id: `${messageId}-a`, role: 'assistant', text: answer.respuesta, visual: answer.visual },
       ]);
       setRemaining(answer.consultasRestantesHoy);
     } catch (error) {
