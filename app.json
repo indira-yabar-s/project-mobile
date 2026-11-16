@@ -32,6 +32,12 @@
           "microphonePermission": false,
           "recordAudioAndroid": false
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Gamarrito usa tu ubicación para mostrarte el clima de tu zona en el Dashboard."
+        }
       ]
     ]
   }

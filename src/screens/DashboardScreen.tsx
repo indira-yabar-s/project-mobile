@@ -11,8 +11,10 @@ import { SalesBarChart } from '../components/SalesBarChart';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { SelectField } from '../components/SelectField';
 import { StatCard } from '../components/StatCard';
+import { WeatherCard } from '../components/WeatherCard';
 import { useAuth } from '../hooks/useAuth';
 import { useFetch } from '../hooks/useFetch';
+import { useWeather } from '../hooks/useWeather';
 import { clientService } from '../services/clientService';
 import { productService } from '../services/productService';
 import { reportService } from '../services/reportService';
@@ -106,7 +108,9 @@ export function DashboardScreen() {
   const salesCount = useFetch(useCallback((signal: AbortSignal) => salesService.getAll({ size: 1 }, signal), []));
   const lowStock = useFetch(useCallback((signal: AbortSignal) => stockService.getLowStock({ size: 5 }, signal), []));
 
-  const all = [summary, previous, daily, grouped, top, productCount, clientCount, salesCount, lowStock];
+  const { forecast, location } = useWeather();
+
+  const all = [summary, previous, daily, grouped, top, productCount, clientCount, salesCount, lowStock, forecast];
   const anyLoading = all.some((request) => request.isLoading);
 
   if (isPulling && !anyLoading) {
@@ -172,6 +176,8 @@ export function DashboardScreen() {
         </View>
 
         {checklistSteps ? <OnboardingChecklist steps={checklistSteps} /> : null}
+
+        <WeatherCard forecast={forecast} location={location} />
 
         {isAdmin ? (
           <>
