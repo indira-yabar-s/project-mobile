@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AssistantScreen } from '../screens/AssistantScreen';
 import { ClientFormScreen } from '../screens/ClientFormScreen';
 import { ClientsScreen } from '../screens/ClientsScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
@@ -93,7 +94,7 @@ export function ClientsStackNavigator() {
 export function AssistantStackNavigator() {
   return (
     <AssistantStack.Navigator>
-      <AssistantStack.Screen name="Assistant" component={PlaceholderScreen} options={rootScreenOptions('Asistente')} />
+      <AssistantStack.Screen name="Assistant" component={AssistantScreen} options={rootScreenOptions('Asistente')} />
     </AssistantStack.Navigator>
   );
 }
