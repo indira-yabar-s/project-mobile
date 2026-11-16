@@ -1,5 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DashboardScreen } from '../screens/DashboardScreen';
+import { ProductFormScreen } from '../screens/ProductFormScreen';
+import { ProductsScreen } from '../screens/ProductsScreen';
 import { PlaceholderScreen } from '../screens/PlaceholderScreen';
 import type {
   AssistantStackParamList,
@@ -50,8 +52,12 @@ export function SalesStackNavigator() {
 export function ProductsStackNavigator() {
   return (
     <ProductsStack.Navigator>
-      <ProductsStack.Screen name="ProductsList" component={PlaceholderScreen} options={rootScreenOptions('Productos')} />
-      <ProductsStack.Screen name="ProductForm" component={PlaceholderScreen} options={{ title: 'Producto' }} />
+      <ProductsStack.Screen name="ProductsList" component={ProductsScreen} options={rootScreenOptions('Productos')} />
+      <ProductsStack.Screen
+        name="ProductForm"
+        component={ProductFormScreen}
+        options={({ route }) => ({ title: route.params?.id !== undefined ? 'Editar producto' : 'Nuevo producto' })}
+      />
       <ProductsStack.Screen
         name="ProductVariants"
         component={PlaceholderScreen}
