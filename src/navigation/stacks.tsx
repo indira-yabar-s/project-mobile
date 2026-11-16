@@ -9,7 +9,6 @@ import { ProductFormScreen } from '../screens/ProductFormScreen';
 import { ProductScannerScreen } from '../screens/ProductScannerScreen';
 import { ProductVariantsScreen } from '../screens/ProductVariantsScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
-import { PlaceholderScreen } from '../screens/PlaceholderScreen';
 import { PurchaseDetailScreen } from '../screens/PurchaseDetailScreen';
 import { PurchaseFormScreen } from '../screens/PurchaseFormScreen';
 import { PurchasesScreen } from '../screens/PurchasesScreen';
@@ -17,6 +16,7 @@ import { SaleDetailScreen } from '../screens/SaleDetailScreen';
 import { SaleScannerScreen } from '../screens/SaleScannerScreen';
 import { SaleFormScreen } from '../screens/SaleFormScreen';
 import { SalesScreen } from '../screens/SalesScreen';
+import { TeamScreen } from '../screens/TeamScreen';
 import { SupplierFormScreen } from '../screens/SupplierFormScreen';
 import { SuppliersScreen } from '../screens/SuppliersScreen';
 import type {
@@ -153,7 +153,7 @@ export function SuppliersStackNavigator() {
 export function TeamStackNavigator() {
   return (
     <TeamStack.Navigator>
-      <TeamStack.Screen name="Team" component={PlaceholderScreen} options={rootScreenOptions('Equipo')} />
+      <TeamStack.Screen name="Team" component={TeamScreen} options={rootScreenOptions('Equipo')} />
     </TeamStack.Navigator>
   );
 }

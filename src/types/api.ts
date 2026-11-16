@@ -8,6 +8,12 @@ export interface User {
   empresaId: number;
 }
 
+export interface EmployeePayload {
+  nombre: string;
+  email: string;
+  password: string;
+}
+
 export interface AuthTokens {
   token: string;
   refreshToken: string;
