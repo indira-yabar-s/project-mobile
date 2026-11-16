@@ -7,7 +7,8 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gamarrito.mobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -16,7 +17,8 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.gamarrito.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -25,6 +27,7 @@
       "expo-font",
       "expo-status-bar",
       "expo-secure-store",
+      "expo-updates",
       [
         "expo-camera",
         {
@@ -39,6 +42,9 @@
           "locationWhenInUsePermission": "Gamarrito usa tu ubicación para mostrarte el clima de tu zona en el Dashboard."
         }
       ]
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
