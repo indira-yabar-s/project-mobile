@@ -25,3 +25,10 @@ export interface SalesOrder {
   total: number;
   detalles: SalesOrderLine[];
 }
+
+export interface SalesOrderPayload {
+  clienteId: number | null;
+  medioPago: PaymentMethod;
+  canal: SalesChannel | null;
+  detalles: { varianteId: number; cantidad: number; precioUnitario: number }[];
+}

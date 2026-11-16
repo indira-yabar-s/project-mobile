@@ -7,6 +7,7 @@ import { ProductVariantsScreen } from '../screens/ProductVariantsScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import { PlaceholderScreen } from '../screens/PlaceholderScreen';
 import { SaleDetailScreen } from '../screens/SaleDetailScreen';
+import { SaleFormScreen } from '../screens/SaleFormScreen';
 import { SalesScreen } from '../screens/SalesScreen';
 import type {
   AssistantStackParamList,
@@ -49,7 +50,7 @@ export function SalesStackNavigator() {
     <SalesStack.Navigator>
       <SalesStack.Screen name="SalesList" component={SalesScreen} options={rootScreenOptions('Ventas')} />
       <SalesStack.Screen name="SaleDetail" component={SaleDetailScreen} options={{ title: 'Detalle de venta' }} />
-      <SalesStack.Screen name="SaleForm" component={PlaceholderScreen} options={{ title: 'Nueva venta' }} />
+      <SalesStack.Screen name="SaleForm" component={SaleFormScreen} options={{ title: 'Nueva venta' }} />
     </SalesStack.Navigator>
   );
 }

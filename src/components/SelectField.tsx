@@ -5,6 +5,7 @@ import { Button, Dialog, HelperText, List, Portal, TextInput } from 'react-nativ
 export interface SelectOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 interface SelectFieldProps {
@@ -80,6 +81,7 @@ export function SelectField({
                   <List.Item
                     key={option.value}
                     title={option.label}
+                    disabled={option.disabled}
                     onPress={() => handleSelect(option.value)}
                     right={(props) =>
                       option.value === value ? <List.Icon {...props} icon="check" /> : null

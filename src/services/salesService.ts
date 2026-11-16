@@ -1,5 +1,5 @@
 import type { PageResponse } from '../types/api';
-import type { SalesOrder } from '../types/sales';
+import type { SalesOrder, SalesOrderPayload } from '../types/sales';
 import api from './api';
 
 interface SalesListParams {
@@ -24,6 +24,11 @@ export const salesService = {
 
   async getById(id: number, signal?: AbortSignal): Promise<SalesOrder> {
     const { data } = await api.get<SalesOrder>(`/sales-orders/${id}`, { signal });
+    return data;
+  },
+
+  async create(payload: SalesOrderPayload): Promise<SalesOrder> {
+    const { data } = await api.post<SalesOrder>('/sales-orders', payload);
     return data;
   },
 };
