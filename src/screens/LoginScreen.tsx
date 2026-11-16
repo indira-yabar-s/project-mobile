@@ -1,3 +1,4 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
@@ -6,11 +7,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FormTextField } from '../components/FormTextField';
 import { useAuth } from '../hooks/useAuth';
 import type { LoginCredentials } from '../types/api';
+import type { AuthStackParamList } from '../types/navigation';
 import { getErrorMessage } from '../utils/errors';
+
+type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 
-export function LoginScreen() {
+export function LoginScreen({ navigation }: Props) {
   const { login } = useAuth();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
@@ -92,6 +96,9 @@ export function LoginScreen() {
 
           <Button mode="contained" onPress={() => handleSubmit(onSubmit)()} loading={isSubmitting} disabled={isSubmitting}>
             Ingresar
+          </Button>
+          <Button mode="text" onPress={() => navigation.navigate('Register')} disabled={isSubmitting}>
+            ¿No tienes cuenta? Regístrate
           </Button>
         </View>
       </ScrollView>
