@@ -1,4 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ClientFormScreen } from '../screens/ClientFormScreen';
+import { ClientsScreen } from '../screens/ClientsScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { ProductFormScreen } from '../screens/ProductFormScreen';
 import { ProductVariantsScreen } from '../screens/ProductVariantsScreen';
@@ -71,8 +73,12 @@ export function ProductsStackNavigator() {
 export function ClientsStackNavigator() {
   return (
     <ClientsStack.Navigator>
-      <ClientsStack.Screen name="ClientsList" component={PlaceholderScreen} options={rootScreenOptions('Clientes')} />
-      <ClientsStack.Screen name="ClientForm" component={PlaceholderScreen} options={{ title: 'Cliente' }} />
+      <ClientsStack.Screen name="ClientsList" component={ClientsScreen} options={rootScreenOptions('Clientes')} />
+      <ClientsStack.Screen
+        name="ClientForm"
+        component={ClientFormScreen}
+        options={({ route }) => ({ title: route.params?.id !== undefined ? 'Editar cliente' : 'Nuevo cliente' })}
+      />
     </ClientsStack.Navigator>
   );
 }
