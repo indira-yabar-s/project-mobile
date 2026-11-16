@@ -8,10 +8,15 @@ import { ProductScannerScreen } from '../screens/ProductScannerScreen';
 import { ProductVariantsScreen } from '../screens/ProductVariantsScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import { PlaceholderScreen } from '../screens/PlaceholderScreen';
+import { PurchaseDetailScreen } from '../screens/PurchaseDetailScreen';
+import { PurchaseFormScreen } from '../screens/PurchaseFormScreen';
+import { PurchasesScreen } from '../screens/PurchasesScreen';
 import { SaleDetailScreen } from '../screens/SaleDetailScreen';
 import { SaleScannerScreen } from '../screens/SaleScannerScreen';
 import { SaleFormScreen } from '../screens/SaleFormScreen';
 import { SalesScreen } from '../screens/SalesScreen';
+import { SupplierFormScreen } from '../screens/SupplierFormScreen';
+import { SuppliersScreen } from '../screens/SuppliersScreen';
 import type {
   AssistantStackParamList,
   CategoriesStackParamList,
@@ -102,13 +107,13 @@ export function AssistantStackNavigator() {
 export function PurchasesStackNavigator() {
   return (
     <PurchasesStack.Navigator>
-      <PurchasesStack.Screen name="PurchasesList" component={PlaceholderScreen} options={rootScreenOptions('Compras')} />
+      <PurchasesStack.Screen name="PurchasesList" component={PurchasesScreen} options={rootScreenOptions('Compras')} />
       <PurchasesStack.Screen
         name="PurchaseDetail"
-        component={PlaceholderScreen}
+        component={PurchaseDetailScreen}
         options={{ title: 'Detalle de compra' }}
       />
-      <PurchasesStack.Screen name="PurchaseForm" component={PlaceholderScreen} options={{ title: 'Nueva compra' }} />
+      <PurchasesStack.Screen name="PurchaseForm" component={PurchaseFormScreen} options={{ title: 'Nueva compra' }} />
     </PurchasesStack.Navigator>
   );
 }
@@ -131,10 +136,10 @@ export function SuppliersStackNavigator() {
     <SuppliersStack.Navigator>
       <SuppliersStack.Screen
         name="SuppliersList"
-        component={PlaceholderScreen}
+        component={SuppliersScreen}
         options={rootScreenOptions('Proveedores')}
       />
-      <SuppliersStack.Screen name="SupplierForm" component={PlaceholderScreen} options={{ title: 'Proveedor' }} />
+      <SuppliersStack.Screen name="SupplierForm" component={SupplierFormScreen} options={{ title: 'Nuevo proveedor' }} />
     </SuppliersStack.Navigator>
   );
 }
