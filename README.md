@@ -6,24 +6,24 @@ Aplicación móvil (React Native + Expo) de Gamarrito, el ERP/SaaS para MYPES te
 
 ## Integrantes y participación
 
-| Integrante | Aportes | Participación (%) |
+| Integrante | Aportes en el proyecto | Participación |
 |---|---|---|
-| Javier Alonso Bravo Chávez | _por completar_ | _por completar_ |
-| Gabriel Murillo Machicao | _por completar_ | _por completar_ |
-| Indira Shian Yabar Ramos | _por completar_ | _por completar_ |
-| Rafael Antonio Vargas Portocarrero | _por completar_ | _por completar_ |
+| Rafael Antonio Vargas Portocarrero | **Backend:** catálogo, inventario, reportes y asistente de IA (Spring AI + Gemini). **Móvil:** la aplicación completa (React Native + Expo), escáner, ubicación y clima. **Despliegue:** AWS EC2, Railway y EAS | 100 % |
+| Javier Alonso Bravo Chávez | **Backend:** empresa, proveedores, categorías y clientes. **Web:** cliente axios e interceptores, autenticación y rutas, layout, catálogo, compras, ventas, dashboard, filtros y exportación CSV | 100 % |
+| Gabriel Murillo Machicao | **Backend:** asistente de IA, categorías y apoyo en autenticación. **Móvil:** integración del asistente | 100 % |
+| Indira Shian Yábar Ramos | **Backend:** usuarios y seguridad (JWT, `JwtService`, `AuthController`). **Web:** renderizado de gráficos del asistente, portada, modo claro/oscuro, rediseño, edición de variantes y ajuste de stock | 100 % |
+| Héctor Sebastián Choque Dueñas | **Backend:** órdenes de compra y órdenes de venta con sus detalles | 100 % |
 
 ## Enlaces
 
 | Componente | URL |
 |---|---|
-| Aplicación móvil (build de prueba, APK) | <enlace de la build en expo.dev> |
-| Actualizaciones OTA (canal `preview`) | <enlace o QR de la actualización en expo.dev> |
+| Aplicación móvil (build de prueba, APK) | <PEGAR AQUI el enlace de la build en expo.dev> |
 | Backend (API) | <https://gamarrito-backend.up.railway.app/api/v1> |
-| Web | <URL del despliegue web> |
+| Web (producción) | <https://gamarrito-erp.vercel.app> |
 | Repositorio móvil | <https://github.com/rafavp03/project-mobile> |
 | Repositorio backend | <https://github.com/rafavp03/dbp-project-backend> |
-| Repositorio web | <URL del repositorio web> |
+| Repositorio web | <https://github.com/javierbravo-del/dbp-project-frontend-web> |
 
 ## Funcionalidades
 
