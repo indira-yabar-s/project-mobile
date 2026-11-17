@@ -7,6 +7,7 @@ import { DailySalesChart } from '../components/DailySalesChart';
 import { DashboardCard } from '../components/DashboardCard';
 import { DateRangeFilter } from '../components/DateRangeFilter';
 import { OnboardingChecklist, type ChecklistStep } from '../components/OnboardingChecklist';
+import { QuickActions, type QuickAction } from '../components/QuickActions';
 import { SalesBarChart } from '../components/SalesBarChart';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { SelectField } from '../components/SelectField';
@@ -20,7 +21,7 @@ import { productService } from '../services/productService';
 import { reportService } from '../services/reportService';
 import { salesService } from '../services/salesService';
 import { stockService } from '../services/stockService';
-import type { MainTabsParamList } from '../types/navigation';
+import type { AppDrawerParamList, MainTabsParamList } from '../types/navigation';
 import type { DailySalesPoint, RankingCriterion, SalesGrouping } from '../types/reports';
 import {
   formatShortDay,
@@ -50,6 +51,13 @@ export function DashboardScreen() {
   const { user, isAdmin } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation<NavigationProp<MainTabsParamList>>();
+  const drawerNavigation = useNavigation<NavigationProp<AppDrawerParamList>>();
+  const restock = useFetch(
+    useCallback(
+      (signal: AbortSignal) => (isAdmin ? reportService.getRestockSuggestions({}, signal) : Promise.resolve(null)),
+      [isAdmin],
+    ),
+  );
   const [range, setRange] = useState<DateRange>(() => getLastDaysRange(30));
   const [grouping, setGrouping] = useState<SalesGrouping>('MEDIO_PAGO');
   const [criterion, setCriterion] = useState<RankingCriterion>('UNIDADES');
@@ -130,17 +138,17 @@ export function DashboardScreen() {
           {
             label: 'Registra tu primer producto',
             done: productCount.data.totalElements > 0,
-            onPress: () => navigation.navigate('ProductsTab', { screen: 'ProductForm' }),
+            onPress: () => navigation.navigate('ProductsTab', { screen: 'ProductForm', initial: false }),
           },
           {
             label: 'Agrega a tu primer cliente',
             done: clientCount.data.totalElements > 0,
-            onPress: () => navigation.navigate('ClientsTab', { screen: 'ClientForm' }),
+            onPress: () => navigation.navigate('ClientsTab', { screen: 'ClientForm', initial: false }),
           },
           {
             label: 'Registra tu primera venta',
             done: salesCount.data.totalElements > 0,
-            onPress: () => navigation.navigate('SalesTab', { screen: 'SaleForm' }),
+            onPress: () => navigation.navigate('SalesTab', { screen: 'SaleForm', initial: false }),
           },
         ]
       : null;
@@ -162,6 +170,50 @@ export function DashboardScreen() {
             : `, un ${Math.abs(salesDelta).toFixed(1)}% ${salesDelta >= 0 ? 'más' : 'menos'} que el periodo anterior.`);
   }
 
+  const restockItems = restock.data ?? [];
+  const restockUrgent = restockItems.filter((item) => item.urgencia === 'AGOTADO' || item.urgencia === 'CRITICO').length;
+  const restockCost = restockItems.reduce((sum, item) => sum + Number(item.costoEstimado), 0);
+
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
+  const firstName = user?.nombre?.trim().split(/\s+/)[0] ?? 'bienvenido';
+  const todayText = now.toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' });
+  const todayLabel = todayText.charAt(0).toUpperCase() + todayText.slice(1);
+
+  const quickActions: QuickAction[] = [
+    {
+      label: 'Nueva venta',
+      icon: 'cart-plus',
+      primary: true,
+      onPress: () => navigation.navigate('SalesTab', { screen: 'SaleForm', initial: false }),
+    },
+    {
+      label: 'Escanear',
+      icon: 'barcode-scan',
+      onPress: () => navigation.navigate('ProductsTab', { screen: 'ProductScanner', initial: false }),
+    },
+    {
+      label: 'Nuevo producto',
+      icon: 'tag-plus-outline',
+      onPress: () => navigation.navigate('ProductsTab', { screen: 'ProductForm', initial: false }),
+    },
+    ...(isAdmin
+      ? [
+          {
+            label: 'Analítica IA',
+            icon: 'chart-box-outline' as const,
+            onPress: () => drawerNavigation.navigate('AnalyticsDrawer', { screen: 'Analytics' }),
+          },
+        ]
+      : []),
+    {
+      label: 'Nuevo cliente',
+      icon: 'account-plus-outline',
+      onPress: () => navigation.navigate('ClientsTab', { screen: 'ClientForm', initial: false }),
+    },
+  ];
+
   return (
     <ScreenContainer>
       <ScrollView
@@ -169,13 +221,61 @@ export function DashboardScreen() {
         refreshControl={<RefreshControl refreshing={isPulling && anyLoading} onRefresh={handleRefresh} />}
       >
         <View style={styles.header}>
-          <Text variant="headlineSmall">{`Hola, ${user?.nombre ?? 'bienvenido'}`}</Text>
+          <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
+            {todayLabel}
+          </Text>
+          <Text variant="headlineSmall" accessibilityRole="header" style={styles.greeting}>
+            {`${greeting}, ${firstName}`}
+          </Text>
           <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
             {isAdmin ? (summaryPhrase ?? 'Resumen de tu negocio') : 'Alertas de inventario'}
           </Text>
         </View>
 
+        <QuickActions actions={quickActions} />
+
         {checklistSteps ? <OnboardingChecklist steps={checklistSteps} /> : null}
+
+        {isAdmin && restockItems.length > 0 ? (
+          <DashboardCard
+            title="Reposición inteligente"
+            action={
+              <Button
+                compact
+                mode="text"
+                onPress={() => drawerNavigation.navigate('PurchasesDrawer', { screen: 'Restock', initial: false })}
+              >
+                Ver plan de compra
+              </Button>
+            }
+          >
+            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+              {`${restockItems.length} tallas por reponer` +
+                (restockUrgent > 0 ? `, ${restockUrgent} urgentes` : '') +
+                `. Inversión estimada: ${formatCurrency(restockCost)}.`}
+            </Text>
+            {restockItems.slice(0, 3).map((item) => (
+              <View key={item.varianteId} style={[styles.stockRow, { borderBottomColor: theme.colors.outlineVariant }]}>
+                <View style={styles.topInfo}>
+                  <Text variant="bodyMedium" style={styles.topName}>
+                    {item.producto}
+                  </Text>
+                  <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+                    {`Talla ${item.talla} · ${item.color} · ` +
+                      (item.stock <= 0
+                        ? 'agotado'
+                        : item.diasRestantes === null
+                          ? 'bajo el mínimo'
+                          : `se agota en ${item.diasRestantes} días`)}
+                  </Text>
+                </View>
+                <Badge variant={item.urgencia === 'AGOTADO' || item.urgencia === 'CRITICO' ? 'danger' : 'warning'}>
+                  {`Comprar ${item.cantidadSugerida}`}
+                </Badge>
+              </View>
+            ))}
+          </DashboardCard>
+        ) : null}
 
         <WeatherCard forecast={forecast} location={location} />
 
@@ -349,7 +449,8 @@ export function DashboardScreen() {
 
 const styles = StyleSheet.create({
   content: { gap: 16, paddingBottom: 32, paddingTop: 8 },
-  header: { gap: 2, paddingHorizontal: 16 },
+  header: { gap: 2, paddingHorizontal: 16, paddingTop: 8 },
+  greeting: { fontWeight: '700' },
   grid: { gap: 12, paddingHorizontal: 16 },
   gridRow: { flexDirection: 'row', gap: 12 },
   select: { minWidth: 170 },

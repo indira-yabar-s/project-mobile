@@ -1,11 +1,10 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
+import { Button, Text, TextInput } from 'react-native-paper';
 import { FormTextField } from '../components/FormTextField';
-import { OfflineBanner } from '../components/OfflineBanner';
+import { AuthLayout } from '../components/AuthLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { enterpriseService } from '../services/enterpriseService';
@@ -30,8 +29,6 @@ const PASSWORD_PATTERN = /^(?=.*[A-Z])(?=.*[0-9]).*$/;
 export function RegisterScreen({ navigation }: Props) {
   const { register: registerUser } = useAuth();
   const { showMessage } = useSnackbar();
-  const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [createdEnterpriseId, setCreatedEnterpriseId] = useState<number | null>(null);
 
@@ -76,28 +73,10 @@ export function RegisterScreen({ navigation }: Props) {
   );
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.flex, { backgroundColor: theme.colors.background }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    <AuthLayout
+      title="Crea tu cuenta"
+      subtitle="Registra tu negocio y tu usuario administrador. Después podrás agregar a tus empleados desde la sección Equipo."
     >
-      <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: insets.top + 32, paddingBottom: insets.bottom + 24 }]}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.offline}>
-          <OfflineBanner />
-        </View>
-        <Text variant="displaySmall" style={{ color: theme.colors.primary }}>
-          Gamarrito
-        </Text>
-        <Text variant="headlineSmall" style={styles.title}>
-          Crea tu cuenta
-        </Text>
-        <Text variant="bodyMedium" style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
-          Registra tu negocio y tu usuario administrador. Después podrás agregar a tus empleados desde la sección Equipo.
-        </Text>
-
-        <View style={styles.form}>
           <Text variant="titleMedium" style={styles.section}>
             Tu negocio
           </Text>
@@ -180,25 +159,18 @@ export function RegisterScreen({ navigation }: Props) {
             loading={isSubmitting}
             disabled={isSubmitting}
             style={styles.submit}
+            contentStyle={{ minHeight: 48 }}
           >
             Crear cuenta
           </Button>
           <Button mode="text" onPress={() => navigation.navigate('Login')} disabled={isSubmitting}>
             ¿Ya tienes cuenta? Inicia sesión
           </Button>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    </AuthLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  offline: { borderRadius: 8, overflow: 'hidden' },
-  content: { flexGrow: 1, paddingHorizontal: 24 },
-  title: { marginTop: 32 },
-  subtitle: { marginTop: 4 },
-  form: { marginTop: 24 },
   section: { marginBottom: 8, marginTop: 8 },
   submit: { marginTop: 8 },
 });

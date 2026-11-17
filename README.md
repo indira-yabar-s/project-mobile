@@ -31,6 +31,8 @@ Aplicación móvil (React Native + Expo) de Gamarrito, el ERP/SaaS para MYPES te
 - **Dashboard:** saludo, checklist de primeros pasos, tarjeta de clima, alertas de stock bajo y, para `ADMIN`, indicadores de ventas con variación frente al periodo anterior, gráfico de 7 días, ventas agrupadas y top de productos.
 - **Productos:** listado con búsqueda, orden y filtro por estado; alta, edición, cambio rápido de precio y desactivación (`ADMIN`); variantes (talla y color) con ingreso y corrección de stock.
 - **Ventas y compras:** historial con rango de fechas y orden, detalle y registro en tres pasos con múltiples líneas. En ventas se valida el stock; en compras se registra el costo.
+- **Reposición inteligente (`ADMIN`):** desde Compras o el Dashboard, muestra qué tallas y colores se van a agotar según el ritmo de venta, cuánto comprar y la inversión estimada, agrupado por el último proveedor; «Preparar compra» abre la compra con las cantidades ya cargadas.
+- **Analítica con IA (`ADMIN`):** se pide un gráfico con una frase y la app lo dibuja (barras, línea o torta) con datos reales; también hay gráficos rápidos que no gastan consultas. Los gráficos se pueden fijar en «Mi tablero», que se guarda en el dispositivo y se recalcula al entrar.
 - **Clientes, proveedores, categorías:** listados con búsqueda y orden, altas y ediciones; eliminación o desactivación solo para `ADMIN` donde corresponde.
 - **Equipo (`ADMIN`):** alta de empleados y retiro de acceso.
 - **Asistente IA:** chat con historial, sugerencias, límite de 500 caracteres y contador de consultas diarias.

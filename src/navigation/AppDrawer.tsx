@@ -7,6 +7,7 @@ import type { AppDrawerParamList } from '../types/navigation';
 import { AppDrawerContent } from './AppDrawerContent';
 import { MainTabs } from './MainTabs';
 import {
+  AnalyticsStackNavigator,
   CategoriesStackNavigator,
   PurchasesStackNavigator,
   SuppliersStackNavigator,
@@ -48,6 +49,13 @@ export function AppDrawer() {
         component={SuppliersStackNavigator}
         options={{ title: 'Proveedores', drawerIcon: drawerIcon('truck-outline') }}
       />
+      {isAdmin && (
+        <Drawer.Screen
+          name="AnalyticsDrawer"
+          component={AnalyticsStackNavigator}
+          options={{ title: 'Analítica con IA', drawerIcon: drawerIcon('chart-box-outline') }}
+        />
+      )}
       {isAdmin && (
         <Drawer.Screen
           name="TeamDrawer"

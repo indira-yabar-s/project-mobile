@@ -20,21 +20,27 @@ import { supplierService } from '../services/supplierService';
 import type { AppDrawerParamList, PurchasesStackParamList } from '../types/navigation';
 import { getErrorMessage } from '../utils/errors';
 import { formatCurrency } from '../utils/format';
-import { getLineSubtotal } from '../utils/orderLines';
+import { createPrefilledLine, getLineSubtotal } from '../utils/orderLines';
 
 type Props = NativeStackScreenProps<PurchasesStackParamList, 'PurchaseForm'>;
 
 const STEPS = ['Proveedor', 'Productos', 'Confirmar'];
 const LAST_STEP = STEPS.length - 1;
 
-export function PurchaseFormScreen({ navigation }: Props) {
+export function PurchaseFormScreen({ navigation, route }: Props) {
   const drawerNavigation = useNavigation<NavigationProp<AppDrawerParamList>>();
   const { showMessage } = useSnackbar();
-  const [step, setStep] = useState(0);
-  const [proveedorId, setProveedorId] = useState('');
+  const prefill = route.params;
+  const hasPrefilledLines = Boolean(prefill?.lineas?.length);
+  // Si la compra viene de Reposición con proveedor y productos, se abre directo en el paso de productos.
+  const [step, setStep] = useState(prefill?.proveedorId && hasPrefilledLines ? 1 : 0);
+  const [proveedorId, setProveedorId] = useState(prefill?.proveedorId ? String(prefill.proveedorId) : '');
   const [showErrors, setShowErrors] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { lines, addLine, removeLine, updateLine, total, isValid } = useOrderLines('purchase');
+  const { lines, addLine, removeLine, updateLine, total, isValid } = useOrderLines(
+    'purchase',
+    prefill?.lineas?.map(createPrefilledLine),
+  );
 
   const products = useFetch(
     useCallback((signal: AbortSignal) => productService.getAll({ size: 100, soloActivos: true }, signal), []),
@@ -154,6 +160,11 @@ export function PurchaseFormScreen({ navigation }: Props) {
       {step === 1 ? (
         <View>
           <Text variant="titleMedium">Productos comprados</Text>
+          {hasPrefilledLines ? (
+            <HelperText type="info" visible>
+              Cantidades sugeridas según tu ritmo de venta. Ajusta la cantidad y el costo a lo que realmente compraste.
+            </HelperText>
+          ) : null}
           {lines.map((line, index) => (
             <SaleLineFields
               key={line.key}

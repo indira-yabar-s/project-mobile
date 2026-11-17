@@ -41,7 +41,13 @@ export type AssistantStackParamList = {
 export type PurchasesStackParamList = {
   PurchasesList: undefined;
   PurchaseDetail: { id: number };
-  PurchaseForm: undefined;
+  PurchaseForm:
+    | {
+        proveedorId?: number;
+        lineas?: { productoId: number; varianteId: number; cantidad: number; precioUnitario: number }[];
+      }
+    | undefined;
+  Restock: undefined;
 };
 
 export type CategoriesStackParamList = {
@@ -52,6 +58,10 @@ export type CategoriesStackParamList = {
 export type SuppliersStackParamList = {
   SuppliersList: undefined;
   SupplierForm: undefined;
+};
+
+export type AnalyticsStackParamList = {
+  Analytics: undefined;
 };
 
 export type TeamStackParamList = {
@@ -71,6 +81,7 @@ export type AppDrawerParamList = {
   PurchasesDrawer: NavigatorScreenParams<PurchasesStackParamList>;
   CategoriesDrawer: NavigatorScreenParams<CategoriesStackParamList>;
   SuppliersDrawer: NavigatorScreenParams<SuppliersStackParamList>;
+  AnalyticsDrawer: NavigatorScreenParams<AnalyticsStackParamList>;
   TeamDrawer: NavigatorScreenParams<TeamStackParamList>;
   Profile: undefined;
 };

@@ -27,6 +27,22 @@ export function createEmptyLine(): OrderLine {
   return { key: createLineKey(), productoId: '', varianteId: '', cantidad: '1', precioUnitario: '', stock: null };
 }
 
+export function createPrefilledLine(values: {
+  productoId: number;
+  varianteId: number;
+  cantidad: number;
+  precioUnitario: number;
+}): OrderLine {
+  return {
+    key: createLineKey(),
+    productoId: String(values.productoId),
+    varianteId: String(values.varianteId),
+    cantidad: String(values.cantidad),
+    precioUnitario: values.precioUnitario > 0 ? String(values.precioUnitario) : '',
+    stock: null,
+  };
+}
+
 export function validateLine(line: OrderLine, mode: OrderMode): OrderLineErrors {
   const errors: OrderLineErrors = {};
 

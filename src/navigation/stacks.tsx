@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AnalyticsScreen } from '../screens/AnalyticsScreen';
 import { AssistantScreen } from '../screens/AssistantScreen';
 import { CategoriesScreen } from '../screens/CategoriesScreen';
 import { CategoryFormScreen } from '../screens/CategoryFormScreen';
@@ -12,6 +13,7 @@ import { ProductsScreen } from '../screens/ProductsScreen';
 import { PurchaseDetailScreen } from '../screens/PurchaseDetailScreen';
 import { PurchaseFormScreen } from '../screens/PurchaseFormScreen';
 import { PurchasesScreen } from '../screens/PurchasesScreen';
+import { RestockScreen } from '../screens/RestockScreen';
 import { SaleDetailScreen } from '../screens/SaleDetailScreen';
 import { SaleScannerScreen } from '../screens/SaleScannerScreen';
 import { SaleFormScreen } from '../screens/SaleFormScreen';
@@ -20,6 +22,7 @@ import { TeamScreen } from '../screens/TeamScreen';
 import { SupplierFormScreen } from '../screens/SupplierFormScreen';
 import { SuppliersScreen } from '../screens/SuppliersScreen';
 import type {
+  AnalyticsStackParamList,
   AssistantStackParamList,
   CategoriesStackParamList,
   ClientsStackParamList,
@@ -46,11 +49,12 @@ const PurchasesStack = createNativeStackNavigator<PurchasesStackParamList>();
 const CategoriesStack = createNativeStackNavigator<CategoriesStackParamList>();
 const SuppliersStack = createNativeStackNavigator<SuppliersStackParamList>();
 const TeamStack = createNativeStackNavigator<TeamStackParamList>();
+const AnalyticsStack = createNativeStackNavigator<AnalyticsStackParamList>();
 
 export function DashboardStackNavigator() {
   return (
     <DashboardStack.Navigator>
-      <DashboardStack.Screen name="Dashboard" component={DashboardScreen} options={rootScreenOptions('Dashboard')} />
+      <DashboardStack.Screen name="Dashboard" component={DashboardScreen} options={rootScreenOptions('Inicio')} />
     </DashboardStack.Navigator>
   );
 }
@@ -116,6 +120,7 @@ export function PurchasesStackNavigator() {
         options={{ title: 'Detalle de compra' }}
       />
       <PurchasesStack.Screen name="PurchaseForm" component={PurchaseFormScreen} options={{ title: 'Nueva compra' }} />
+      <PurchasesStack.Screen name="Restock" component={RestockScreen} options={{ title: 'Reposición inteligente' }} />
     </PurchasesStack.Navigator>
   );
 }
@@ -155,5 +160,13 @@ export function TeamStackNavigator() {
     <TeamStack.Navigator>
       <TeamStack.Screen name="Team" component={TeamScreen} options={rootScreenOptions('Equipo')} />
     </TeamStack.Navigator>
+  );
+}
+
+export function AnalyticsStackNavigator() {
+  return (
+    <AnalyticsStack.Navigator>
+      <AnalyticsStack.Screen name="Analytics" component={AnalyticsScreen} options={rootScreenOptions('Analítica')} />
+    </AnalyticsStack.Navigator>
   );
 }

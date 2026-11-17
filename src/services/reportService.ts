@@ -1,4 +1,11 @@
-import type { GroupedSales, ProductRanking, RankingCriterion, SalesGrouping, SalesSummary } from '../types/reports';
+import type {
+  GroupedSales,
+  ProductRanking,
+  RankingCriterion,
+  RestockSuggestion,
+  SalesGrouping,
+  SalesSummary,
+} from '../types/reports';
 import api from './api';
 
 interface DateRangeParams {
@@ -29,6 +36,17 @@ export const reportService = {
   ): Promise<GroupedSales[]> {
     const { data } = await api.get<GroupedSales[]>('/reports/grouped-sales', {
       params: { desde, hasta, por },
+      signal,
+    });
+    return data;
+  },
+
+  async getRestockSuggestions(
+    { dias = 30, cobertura = 21 }: { dias?: number; cobertura?: number } = {},
+    signal?: AbortSignal,
+  ): Promise<RestockSuggestion[]> {
+    const { data } = await api.get<RestockSuggestion[]>('/reports/restock-suggestions', {
+      params: { dias, cobertura },
       signal,
     });
     return data;

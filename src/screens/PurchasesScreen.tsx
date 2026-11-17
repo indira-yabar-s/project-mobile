@@ -8,6 +8,7 @@ import { DateRangeFilter } from '../components/DateRangeFilter';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { SortChips } from '../components/SortChips';
 import { usePagination, type FetchPageArgs } from '../hooks/usePagination';
+import { useAuth } from '../hooks/useAuth';
 import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import { useSort } from '../hooks/useSort';
 import { purchaseService } from '../services/purchaseService';
@@ -28,6 +29,7 @@ const SORT_LABELS: Record<SortField, string> = {
 
 export function PurchasesScreen({ navigation }: Props) {
   const theme = useTheme();
+  const { isAdmin } = useAuth();
   const [range, setRange] = useState<DateRange>(() => getLastDaysRange(30));
   const { field, direction, sort, toggle } = useSort<SortField>('fechaEmision', 'desc');
   const { desde, hasta } = range;
@@ -45,6 +47,16 @@ export function PurchasesScreen({ navigation }: Props) {
 
   const header = (
     <View>
+      {isAdmin ? (
+        <Button
+          mode="contained-tonal"
+          icon="lightbulb-on-outline"
+          onPress={() => navigation.navigate('Restock')}
+          style={styles.restock}
+        >
+          Ver qué conviene reponer
+        </Button>
+      ) : null}
       <DateRangeFilter desde={desde} hasta={hasta} onChange={setRange} />
       <SortChips labels={SORT_LABELS} field={field} direction={direction} onChange={toggle} />
     </View>
@@ -101,6 +113,7 @@ export function PurchasesScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   card: { marginHorizontal: 16, marginTop: 12 },
+  restock: { marginHorizontal: 16, marginTop: 12 },
   titleRow: { alignItems: 'flex-start', flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
   titleInfo: { flex: 1 },
   footer: { alignItems: 'flex-end', marginTop: 8 },

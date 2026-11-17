@@ -29,7 +29,10 @@ export function OnboardingChecklist({ steps }: OnboardingChecklistProps) {
             {`${done} de ${steps.length} pasos`}
           </Text>
         </View>
-        <ProgressBar progress={done / steps.length} style={styles.progress} />
+        {/* En web, ProgressBar ocupa el 100% del alto del padre: se envuelve en un View de alto fijo. */}
+        <View style={styles.progressWrap}>
+          <ProgressBar progress={done / steps.length} style={styles.progress} />
+        </View>
         {steps.map((step) => (
           <Pressable
             key={step.label}
@@ -67,7 +70,8 @@ export function OnboardingChecklist({ steps }: OnboardingChecklistProps) {
 const styles = StyleSheet.create({
   card: { marginHorizontal: 16 },
   header: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'space-between' },
-  progress: { borderRadius: 4, height: 6, marginVertical: 12 },
+  progressWrap: { height: 6, marginVertical: 12, overflow: 'hidden' },
+  progress: { borderRadius: 4, height: 6 },
   step: { alignItems: 'center', flexDirection: 'row', gap: 12, minHeight: 44 },
   stepLabel: { flex: 1 },
   stepDone: { opacity: 0.7, textDecorationLine: 'line-through' },

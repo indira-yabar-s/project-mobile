@@ -37,3 +37,27 @@ export interface DailySalesPoint {
   label: string;
   total: number;
 }
+
+export type RestockUrgency = 'AGOTADO' | 'CRITICO' | 'PRONTO' | 'PLANIFICAR';
+
+export interface RestockSuggestion {
+  varianteId: number;
+  productoId: number;
+  codigo: string;
+  producto: string;
+  talla: string;
+  color: string;
+  stock: number;
+  stockMinimo: number;
+  unidadesVendidas: number;
+  ventaDiaria: number;
+  diasRestantes: number | null;
+  fechaAgotamiento: string | null;
+  urgencia: RestockUrgency;
+  cantidadSugerida: number;
+  costoUnitario: number;
+  costoEstimado: number;
+  ventaEnRiesgoDiaria: number;
+  proveedorId: number | null;
+  proveedorRazonSocial: string | null;
+}

@@ -26,8 +26,10 @@ function reducer(state: OrderLine[], action: Action): OrderLine[] {
   }
 }
 
-export function useOrderLines(mode: OrderMode) {
-  const [lines, dispatch] = useReducer(reducer, undefined, () => [createEmptyLine()]);
+export function useOrderLines(mode: OrderMode, initialLines?: OrderLine[]) {
+  const [lines, dispatch] = useReducer(reducer, undefined, () =>
+    initialLines && initialLines.length > 0 ? initialLines : [createEmptyLine()],
+  );
 
   const addLine = useCallback(() => dispatch({ type: 'add', line: createEmptyLine() }), []);
   const removeLine = useCallback((key: string) => dispatch({ type: 'remove', key }), []);

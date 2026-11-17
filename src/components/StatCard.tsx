@@ -42,10 +42,14 @@ export function StatCard({ title, value, hint, icon, delta, isLoading = false }:
     <Card style={styles.card}>
       <Card.Content>
         <View style={styles.header}>
-          <Text variant="labelLarge" style={{ color: theme.colors.onSurfaceVariant }}>
+          <Text variant="labelLarge" style={[styles.title, { color: theme.colors.onSurfaceVariant }]}>
             {title}
           </Text>
-          {icon ? <MaterialCommunityIcons name={icon} size={20} color={theme.colors.primary} /> : null}
+          {icon ? (
+            <View style={[styles.icon, { backgroundColor: theme.colors.secondaryContainer }]}>
+              <MaterialCommunityIcons name={icon} size={18} color={theme.colors.primary} />
+            </View>
+          ) : null}
         </View>
         {isLoading ? (
           <View style={styles.skeletons}>
@@ -74,7 +78,9 @@ export function StatCard({ title, value, hint, icon, delta, isLoading = false }:
 
 const styles = StyleSheet.create({
   card: { flex: 1 },
-  header: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  header: { alignItems: 'center', flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
+  title: { flex: 1 },
+  icon: { alignItems: 'center', borderRadius: 10, height: 32, justifyContent: 'center', width: 32 },
   value: { fontWeight: '700', marginTop: 8 },
   footer: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 },
   delta: { alignItems: 'center', flexDirection: 'row', gap: 2 },
